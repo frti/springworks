@@ -43,11 +43,7 @@ public class Waypoint {
         var previousWaypoint = firstWaypoint;
         var totalTime = 0;
         for (Waypoint wp : list) {
-            System.out.println("Comparing previous wp " + previousWaypoint + " with " + wp);
-            // System.out.println("ppp " + wp.timestamp.     // ..getNanos());
             var deltaTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
-            System.out.println("deltaTime = " + deltaTime);
-            totalTime += deltaTime; // TODO
             var previousDistance = previousWaypoint.speed * deltaTime;
             var previousSpeedingDistance = previousWaypoint.isSpeeding() ? previousDistance : 0.0;
             var previousSpeedingTime = previousWaypoint.isSpeeding() ? deltaTime : 0;
@@ -60,9 +56,9 @@ public class Waypoint {
                     previousDistance,
                     deltaTime
                     );
-            System.out.println("STATE: " + state);
             acc = acc.add(state);
             previousWaypoint = wp;
+            System.out.println("Done processing one waypoint: " + state);
         }
         return acc;
     }

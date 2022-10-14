@@ -33,18 +33,10 @@ public class App {
                     mapper0.getTypeFactory().constructCollectionType(ArrayList.class, Waypoint.class);
             ArrayList<Waypoint> rowsArrayList =
                     mapper0.readValue(new File(file), listType); // .stream().sorted().toArray();
-            System.out.println("count " + rowsArrayList.size());
-
-
-            System.out.println("First entry: " + rowsArrayList.get(0));
-            System.out.println("First entry speed limit: " + rowsArrayList.get(0).speedLimit);
-            System.out.println("First entry TS: " + rowsArrayList.get(0).timestamp);
-            var t0 = rowsArrayList.get(0).timestamp;
-
-            System.out.println("QQQ " + rowsArrayList);
+            System.out.println("Loaded " + rowsArrayList.size() + " waypoints");
 
             var state = (new Waypoint(null, 1d, 2d)).process(rowsArrayList);
-            System.out.println("final state is " + state);
+            System.out.println("======================\nInsurance report\n" + state);
         } catch (IOException e) {
             System.out.println("Failed to parse file: " + e);
         }
