@@ -18,8 +18,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-
-
         System.out.println(new App().getGreeting());
 
         //var file = args[0]; // TODO

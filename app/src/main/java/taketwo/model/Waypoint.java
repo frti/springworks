@@ -33,41 +33,26 @@ public class Waypoint {
         if (list.size() < 2) {
             return new State(0, 0, 0, 0);
         }
-        /*List<Waypoint> sortedList = */
-        // list.sort(Comparator.comparing((Waypoint a) -> a.timestamp)); // .collect(Collectors.toList());
         List<Waypoint> sortedList = list.stream().sorted(Comparator.comparing((Waypoint a) -> a.timestamp)).collect(Collectors.toList());
-        System.out.println("====>>> " + sortedList);
         var firstWaypoint = list.get(0);
         sortedList.remove(0);
         var acc = new State(0, 0, 0, 0);
         var previousWaypoint = firstWaypoint;
-        var totalTime = 0;
         for (Waypoint wp : list) {
-            var deltaTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
-            var previousDistance = previousWaypoint.speed * deltaTime;
+            var previousTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
+            var previousDistance = previousWaypoint.speed * previousTime;
             var previousSpeedingDistance = previousWaypoint.isSpeeding() ? previousDistance : 0.0;
-            var previousSpeedingTime = previousWaypoint.isSpeeding() ? deltaTime : 0;
-            System.out.println("deltaTime " + deltaTime);
-            System.out.println("previousDistance " + previousDistance);
-            System.out.println("previousSpeedingDistance " + previousSpeedingDistance);
-            System.out.println("previousSpeedingTime " + previousSpeedingTime);
+            var previousSpeedingTime = previousWaypoint.isSpeeding() ? previousTime : 0;
             var state = new State(previousSpeedingDistance,
                     previousSpeedingTime,
                     previousDistance,
-                    deltaTime
-                    );
+                    previousTime
+            );
             acc = acc.add(state);
             previousWaypoint = wp;
-            System.out.println("Done processing one waypoint: " + state);
+            System.out.println("Done processing one waypoint (" + wp.timestamp + "): " + state);
         }
         return acc;
-    }
-
-    private double getTimeMillis(final Timestamp timestamp) {
-        System.out.println("getTimeMillis(" + timestamp + ", " + timestamp.getTime() + ", " + (timestamp.getNanos() / 1000000d));
-        double v = timestamp.getTime() + timestamp.getNanos() / 1000000d;
-        System.out.println("   Returns " + v);
-        return v;
     }
 
     @Override
