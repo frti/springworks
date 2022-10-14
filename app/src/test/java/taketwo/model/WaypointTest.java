@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WaypointTest {
 
-    final public Timestamp someDay = Timestamp.from(Instant.ofEpochSecond(1665734817));
+    final public Timestamp someDay = Timestamp.from(Instant.ofEpochSecond(1665734));
 
     @Test
     void processBasic() {
