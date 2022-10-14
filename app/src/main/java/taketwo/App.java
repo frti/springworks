@@ -43,7 +43,7 @@ public class App {
 
             System.out.println("QQQ " + rowsArrayList);
 
-            var state = (new Waypoint()).process(rowsArrayList);
+            var state = (new Waypoint(null, 1d, 2d)).process(rowsArrayList);
             System.out.println("final state is " + state);
         } catch (IOException e) {
             System.out.println("Failed to parse file: " + e);
