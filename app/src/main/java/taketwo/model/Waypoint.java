@@ -44,18 +44,35 @@ public class Waypoint {
         var totalTime = 0;
         for (Waypoint wp : list) {
             System.out.println("Comparing previous wp " + previousWaypoint + " with " + wp);
-            var deltaTime = (wp.timestamp.getNanos() - previousWaypoint.timestamp.getNanos()) / 1000000000.0;
+            // System.out.println("ppp " + wp.timestamp.     // ..getNanos());
+            var deltaTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
+            System.out.println("deltaTime = " + deltaTime);
             totalTime += deltaTime; // TODO
             var previousDistance = previousWaypoint.speed * deltaTime;
             var previousSpeedingDistance = previousWaypoint.isSpeeding() ? previousDistance : 0.0;
             var previousSpeedingTime = previousWaypoint.isSpeeding() ? deltaTime : 0;
             System.out.println("deltaTime " + deltaTime);
-            System.out.printf("previousDistance " + previousDistance);
-            System.out.printf("previousSpeedingDistance " + previousSpeedingDistance);
+            System.out.println("previousDistance " + previousDistance);
+            System.out.println("previousSpeedingDistance " + previousSpeedingDistance);
+            System.out.println("previousSpeedingTime " + previousSpeedingTime);
+            var state = new State(previousSpeedingDistance,
+                    previousSpeedingTime,
+                    previousDistance,
+                    deltaTime
+                    );
+            System.out.println("STATE: " + state);
+            acc = acc.add(state);
+            previousWaypoint = wp;
         }
         return acc;
     }
 
+    private double getTimeMillis(final Timestamp timestamp) {
+        System.out.println("getTimeMillis(" + timestamp + ", " + timestamp.getTime() + ", " + (timestamp.getNanos() / 1000000d));
+        double v = timestamp.getTime() + timestamp.getNanos() / 1000000d;
+        System.out.println("   Returns " + v);
+        return v;
+    }
 
     @Override
     public String toString() {
