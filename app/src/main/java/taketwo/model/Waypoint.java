@@ -21,13 +21,13 @@ public class Waypoint {
         if (list.size() < 2) {
             return new State(0, 0, 0, 0);
         }
-        var sortedList = list.stream().sorted().collect(Collectors.toList());
-        var firstWaypoint = sortedList.get(0);
-        sortedList.remove(0);
+        /*List<Waypoint> sortedList = */list.sort((Waypoint a, Waypoint b) -> a.timestamp.compareTo(b.timestamp)); // .collect(Collectors.toList());
+        var firstWaypoint = list.get(0);
+        list.remove(0);
         var acc = new State(0, 0, 0, 0);
         var previousWaypoint = firstWaypoint;
         var totalTime = 0;
-        for (Waypoint wp : sortedList) {
+        for (Waypoint wp : list) {
             var deltaTime = (wp.timestamp.getNanos() - previousWaypoint.timestamp.getNanos()) / 1000000000.0;
             totalTime += deltaTime; // TODO
             var previousDistance = previousWaypoint.speed * deltaTime;
@@ -37,6 +37,9 @@ public class Waypoint {
             System.out.printf("previousDistance " + previousDistance);
             System.out.printf("previousSpeedingDistance " + previousSpeedingDistance);
         }
+        var state = (new Waypoint()).process(list);
+        System.out.println("final state is " + state);
+
         // timestamp = firstWaypoint.timestamp, )
         return acc;
     }

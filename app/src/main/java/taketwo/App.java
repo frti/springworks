@@ -3,12 +3,50 @@
  */
 package taketwo;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import taketwo.model.Waypoint;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
+
+
         System.out.println(new App().getGreeting());
+
+        //var file = args[0]; // TODO
+        var file = "/home/fredrik/Downloads/waypoints.json";
+        try {
+            System.out.println(new App().getGreeting());
+
+            ObjectMapper mapper0 =
+                    new ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            CollectionType listType =
+                    mapper0.getTypeFactory().constructCollectionType(ArrayList.class, Waypoint.class);
+            ArrayList<Waypoint> rowsArrayList =
+                    mapper0.readValue(new File(file), listType); // .stream().sorted().toArray();
+            System.out.println("count " + rowsArrayList.size());
+
+
+            System.out.println("First entry: " + rowsArrayList.get(0));
+            System.out.println("First entry speed limit: " + rowsArrayList.get(0).speedLimit);
+            System.out.println("First entry TS: " + rowsArrayList.get(0).timestamp);
+            var t0 = rowsArrayList.get(0).timestamp;
+
+            System.out.println("QQQ " + rowsArrayList);
+
+            var state = (new Waypoint()).process(rowsArrayList);
+            System.out.println("final state is " + state);
+        } catch (IOException e) {
+            System.out.println("Failed to parse file: " + e);
+        }
     }
 }
