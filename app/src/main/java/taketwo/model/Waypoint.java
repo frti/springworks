@@ -29,10 +29,11 @@ public class Waypoint {
     }
 
 
-    public State process(List<Waypoint> list) {
+    public static State process(List<Waypoint> list) {
         if (list.size() < 2) {
             return new State(0, 0, 0, 0);
         }
+        // Get a mutable, sorted representation of the list of waypoints.
         List<Waypoint> sortedList = list.stream().sorted(Comparator.comparing((Waypoint a) -> a.timestamp)).collect(Collectors.toList());
         var firstWaypoint = list.get(0);
         sortedList.remove(0);
@@ -50,7 +51,6 @@ public class Waypoint {
             );
             acc = acc.add(state);
             previousWaypoint = wp;
-            System.out.println("Done processing one waypoint (" + wp.timestamp + "): " + state);
         }
         return acc;
     }

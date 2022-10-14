@@ -13,24 +13,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-
-        //var file = args[0]; // TODO
-        var file = "/home/fredrik/Downloads/waypoints.json";
+        final var file = "../waypoints.json";
         try {
-            System.out.println(new App().getGreeting());
-
             ObjectMapper mapper0 =
                     new ObjectMapper().configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             CollectionType listType =
                     mapper0.getTypeFactory().constructCollectionType(ArrayList.class, Waypoint.class);
             ArrayList<Waypoint> rowsArrayList =
-                    mapper0.readValue(new File(file), listType); // .stream().sorted().toArray();
+                    mapper0.readValue(new File(file), listType);
             System.out.println("Loaded " + rowsArrayList.size() + " waypoints");
 
             var state = (new Waypoint(null, 1d, 2d)).process(rowsArrayList);

@@ -31,7 +31,7 @@ class WaypointTest {
         assertFalse(wp1.isSpeeding());
 
         List<Waypoint> wps = List.of(wp0, wp1);
-        var result = wp0.process(wps);
+        var result = Waypoint.process(wps);
         System.out.println("result = " + result);
         final var expected = new State(750, 30, 750, 30);
         assertEquals(expected, result);
@@ -50,7 +50,7 @@ class WaypointTest {
         final var wp3 = new Waypoint(getTimestamp(110), 5d, 20d);
 
         List<Waypoint> wps = List.of(wp0, wp1, wp2, wp3);
-        var result = wp0.process(wps);
+        var result = Waypoint.process(wps);
         System.out.println("result = " + result);
         assertEquals(new State(30600, 90, 30700, 110), result);
     }
