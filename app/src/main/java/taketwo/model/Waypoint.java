@@ -18,7 +18,7 @@ public class Waypoint {
     public Waypoint() {
     }
 
-    public Waypoint(Timestamp timestamp, double speed, double speedLimit) {
+    public Waypoint(final Timestamp timestamp, final double speed, final double speedLimit) {
         this.timestamp = timestamp;
         this.speed = speed;
         this.speedLimit = speedLimit;
@@ -35,16 +35,16 @@ public class Waypoint {
         }
         // Get a mutable, sorted representation of the list of waypoints.
         List<Waypoint> sortedList = list.stream().sorted(Comparator.comparing((Waypoint a) -> a.timestamp)).collect(Collectors.toList());
-        var firstWaypoint = list.get(0);
+        final var firstWaypoint = list.get(0);
         sortedList.remove(0);
         var accumulator = new State(0, 0, 0, 0);
         var previousWaypoint = firstWaypoint;
         for (Waypoint wp : list) {
-            var previousLegTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
-            var previousLegDistance = previousWaypoint.speed * previousLegTime;
-            var previousLegSpeedingDistance = previousWaypoint.isSpeeding() ? previousLegDistance : 0.0;
-            var previousLegSpeedingTime = previousWaypoint.isSpeeding() ? previousLegTime : 0;
-            var previousLeg = new State(previousLegSpeedingDistance,
+            final var previousLegTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
+            final var previousLegDistance = previousWaypoint.speed * previousLegTime;
+            final var previousLegSpeedingDistance = previousWaypoint.isSpeeding() ? previousLegDistance : 0.0;
+            final var previousLegSpeedingTime = previousWaypoint.isSpeeding() ? previousLegTime : 0;
+            final var previousLeg = new State(previousLegSpeedingDistance,
                     previousLegSpeedingTime,
                     previousLegDistance,
                     previousLegTime
