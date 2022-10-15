@@ -37,22 +37,22 @@ public class Waypoint {
         List<Waypoint> sortedList = list.stream().sorted(Comparator.comparing((Waypoint a) -> a.timestamp)).collect(Collectors.toList());
         var firstWaypoint = list.get(0);
         sortedList.remove(0);
-        var acc = new State(0, 0, 0, 0);
+        var accumulator = new State(0, 0, 0, 0);
         var previousWaypoint = firstWaypoint;
         for (Waypoint wp : list) {
-            var previousTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
-            var previousDistance = previousWaypoint.speed * previousTime;
-            var previousSpeedingDistance = previousWaypoint.isSpeeding() ? previousDistance : 0.0;
-            var previousSpeedingTime = previousWaypoint.isSpeeding() ? previousTime : 0;
-            var state = new State(previousSpeedingDistance,
-                    previousSpeedingTime,
-                    previousDistance,
-                    previousTime
+            var previousLegTime = (wp.timestamp.getTime() - previousWaypoint.timestamp.getTime()) / 1000d;
+            var previousLegDistance = previousWaypoint.speed * previousLegTime;
+            var previousLegSpeedingDistance = previousWaypoint.isSpeeding() ? previousLegDistance : 0.0;
+            var previousLegSpeedingTime = previousWaypoint.isSpeeding() ? previousLegTime : 0;
+            var previousLeg = new State(previousLegSpeedingDistance,
+                    previousLegSpeedingTime,
+                    previousLegDistance,
+                    previousLegTime
             );
-            acc = acc.add(state);
+            accumulator = accumulator.add(previousLeg);
             previousWaypoint = wp;
         }
-        return acc;
+        return accumulator;
     }
 
     @Override
